@@ -38,8 +38,8 @@ function initializeMessagingTab() {
             }
         });
         messageInputTextarea.addEventListener('input', function () {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
+            this.style.height = 'auto'; // 重置高度以允许缩小
+            this.style.height = (this.scrollHeight) + 'px'; // 根据内容调整高度
         });
     }
 }
@@ -50,7 +50,6 @@ function initializeMessagingTab() {
 async function loadMessagingTabData() {
     if (typeof window.clearMessages === 'function') window.clearMessages();
     
-    // 确保 currentUserEmail 已被设置 (通常在 main.js 的 checkLoginStatus 后或此处获取)
     if (typeof window.apiCall === 'function' && !currentUserEmail) {
         const { ok, data } = await window.apiCall('/api/me');
         if (ok && data.email) {
@@ -68,7 +67,7 @@ async function loadMessagingTabData() {
 
     if (messageInputAreaDiv) messageInputAreaDiv.classList.add('hidden');
     if (messagesListDiv) messagesListDiv.innerHTML = '<p style="text-align:center; color: var(--text-color-muted); margin-top:auto; margin-bottom:auto;">请选择一个对话以查看消息。</p>';
-    currentActiveConversationId = null; // 重置当前激活的对话ID
+    currentActiveConversationId = null; 
 }
 
 /**
@@ -108,8 +107,14 @@ function displayConversations(conversations) {
     let html = '';
     conversations.forEach(conv => {
         const otherParticipantDisplay = window.escapeHtml(conv.other_participant_username || conv.other_participant_email);
-        let lastMessage = conv.last_message_content ? window.escapeHtml(conv.last_message_content) : '<i>开始聊天吧！</i>';
-        if (lastMessage.length > 30) lastMessage = lastMessage.substring(0, 27) + "..."; 
+        let lastMessagePreview = conv.last_message_content ? conv.last_message_content : '<i>开始聊天吧！</i>';
+        // 对于Markdown内容，预览时应显示纯文本或截断的纯文本
+        if (typeof window.marked === 'function' && conv.last_message_content) {
+             // 简单地移除Markdown标记来生成预览，或者使用更复杂的纯文本提取
+            lastMessagePreview = window.marked.parse(conv.last_message_content, { sanitize: false, breaks: true }).replace(/<[^>]*>?/gm, '');
+        }
+        lastMessagePreview = window.escapeHtml(lastMessagePreview);
+        if (lastMessagePreview.length > 30) lastMessagePreview = lastMessagePreview.substring(0, 27) + "..."; 
         
         const lastMessageTime = conv.last_message_at ? new Date(conv.last_message_at * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
         const unreadCount = conv.unread_count > 0 ? `<span class="unread-badge">${conv.unread_count}</span>` : '';
@@ -119,7 +124,7 @@ function displayConversations(conversations) {
             <li data-conversation-id="${conv.conversation_id}" data-other-participant-email="${window.escapeHtml(conv.other_participant_email)}" class="${isActive}" title="与 ${otherParticipantDisplay} 的对话">
                 <span class="conversation-time">${lastMessageTime}</span>
                 <div class="conversation-username">${otherParticipantDisplay} ${unreadCount}</div>
-                <div class="conversation-last-message">${conv.last_message_sender === currentUserEmail ? '你: ' : ''}${lastMessage}</div>
+                <div class="conversation-last-message">${conv.last_message_sender === currentUserEmail ? '你: ' : ''}${lastMessagePreview}</div>
             </li>
         `;
     });
@@ -184,6 +189,8 @@ async function loadMessagesForConversation(conversationId) {
 
 /**
  * 渲染消息列表到 UI。
+ * @param {Array} messages 消息对象数组。
+ * @param {string} currentEmail 当前登录用户的邮箱。
  */
 function displayMessages(messages, currentEmail) {
     if (!messagesListDiv) return;
@@ -196,17 +203,28 @@ function displayMessages(messages, currentEmail) {
         const isSent = msg.sender_email === currentEmail;
         const senderDisplayName = isSent ? '你' : (window.escapeHtml(msg.sender_username || msg.sender_email));
         const messageTime = new Date(msg.sent_at * 1000).toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        
+        // 解析 Markdown 并清理 HTML
+        let messageHtmlContent = '';
+        if (typeof window.marked === 'function' && typeof DOMPurify === 'object' && DOMPurify.sanitize) {
+            // 配置 marked 以支持换行符 <br>
+            messageHtmlContent = DOMPurify.sanitize(window.marked.parse(msg.content || '', { breaks: true, gfm: true }));
+        } else {
+            messageHtmlContent = window.escapeHtml(msg.content || '').replace(/\n/g, '<br>'); // 降级处理
+            if (typeof window.marked !== 'function') console.warn("marked.js not loaded.");
+            if (typeof DOMPurify !== 'object' || !DOMPurify.sanitize) console.warn("DOMPurify.js not loaded.");
+        }
 
         html += `
             <div class="message-item ${isSent ? 'sent' : 'received'}">
                 <span class="message-sender">${senderDisplayName}</span>
-                <div class="message-content">${window.escapeHtml(msg.content).replace(/\n/g, '<br>')}</div>
+                <div class="message-content">${messageHtmlContent}</div>
                 <span class="message-time">${messageTime}</span>
             </div>
         `;
     });
     messagesListDiv.innerHTML = html;
-    messagesListDiv.scrollTop = messagesListDiv.scrollHeight;
+    messagesListDiv.scrollTop = messagesListDiv.scrollHeight; // 自动滚动到底部
 }
 
 /**
@@ -217,7 +235,7 @@ async function handleSendMessage() {
         if (typeof window.showMessage === 'function') window.showMessage('请先选择一个对话或确保您已登录。', 'warning');
         return;
     }
-    const content = messageInputTextarea.value.trim();
+    const content = messageInputTextarea.value.trim(); // 用户输入的原始 Markdown
     const receiverEmail = messageInputTextarea.dataset.receiverEmail;
 
     if (!content) {
@@ -229,7 +247,7 @@ async function handleSendMessage() {
         return;
     }
 
-    const requestBody = { receiverEmail: receiverEmail, content: content };
+    const requestBody = { receiverEmail: receiverEmail, content: content }; // 发送原始 Markdown
 
     if (typeof window.apiCall === 'function') {
         if(btnSendMessage) btnSendMessage.disabled = true;
@@ -268,15 +286,17 @@ async function handleStartNewConversation() {
         if (typeof window.showMessage === 'function') window.showMessage('不能与自己开始对话。', 'warning');
         return;
     }
-    if (typeof window.isValidEmail !== 'function' || !window.isValidEmail(receiverEmail)) {
+    if (typeof window.isValidEmail !== 'function' || !window.isValidEmail(receiverEmail)) { 
         if (typeof window.showMessage === 'function') window.showMessage('请输入有效的邮箱地址。', 'error');
         return;
     }
     
     if (typeof window.apiCall === 'function') {
+        // 发送一条初始消息以创建或获取对话
+        const initialMessageContent = `与 ${currentUserEmail} 的对话已开始。`; // 可以是系统消息或空
         const { ok, data } = await window.apiCall('/api/messages', 'POST', {
             receiverEmail: receiverEmail,
-            content: "(新对话已创建)" // 发送一条初始消息以确保对话创建
+            content: initialMessageContent 
         });
 
         if (ok && data.success && data.conversationId) {
@@ -284,16 +304,21 @@ async function handleStartNewConversation() {
             await loadConversations(); 
             
             // 尝试激活新创建的对话
-            const newConvElement = conversationsListUl.querySelector(`li[data-conversation-id="${data.conversationId}"]`);
-            if (newConvElement) {
-                handleConversationClick(data.conversationId, receiverEmail);
-            } else {
-                // 如果因为排序等原因没立即显示，至少准备好消息区域
-                currentActiveConversationId = data.conversationId;
-                if(messageInputTextarea) messageInputTextarea.dataset.receiverEmail = receiverEmail;
-                if (messageInputAreaDiv) messageInputAreaDiv.classList.remove('hidden');
-                if (messagesListDiv) messagesListDiv.innerHTML = '<p style="text-align:center; color: var(--text-color-muted); margin-top:auto; margin-bottom:auto;">开始聊天吧！</p>';
-            }
+            // 需要确保 loadConversations 完成后 DOM 更新完毕才能查找元素
+            // 最好是在 loadConversations 内部处理激活，或者使用回调/Promise
+            setTimeout(() => { // 延迟一点以确保 DOM 更新
+                const newConvElement = conversationsListUl.querySelector(`li[data-conversation-id="${data.conversationId}"]`);
+                if (newConvElement) {
+                    handleConversationClick(data.conversationId, receiverEmail);
+                } else {
+                    // 如果因为排序等原因没立即显示，至少准备好消息区域
+                    currentActiveConversationId = data.conversationId;
+                    if(messageInputTextarea) messageInputTextarea.dataset.receiverEmail = receiverEmail;
+                    if (messageInputAreaDiv) messageInputAreaDiv.classList.remove('hidden');
+                    if (messagesListDiv) messagesListDiv.innerHTML = '<p style="text-align:center; color: var(--text-color-muted); margin-top:auto; margin-bottom:auto;">开始聊天吧！</p>';
+                }
+            }, 100); // 短暂延迟
+
             if (typeof window.showMessage === 'function') window.showMessage(`与 ${window.escapeHtml(receiverEmail)} 的对话已开始。`, 'success');
 
         } else if (data.error === '接收者用户不存在') {
@@ -302,7 +327,7 @@ async function handleStartNewConversation() {
             if (typeof window.showMessage === 'function') window.showMessage(`无法与 ${window.escapeHtml(receiverEmail)} 开始对话: ${data.error || '未知错误'}`, 'error');
         }
     }
-    newConversationEmailInput.value = ''; // 确保清空
+    newConversationEmailInput.value = ''; 
 }
 
 /**
@@ -333,8 +358,6 @@ async function updateUnreadMessagesIndicator() {
 document.addEventListener('DOMContentLoaded', () => {
     initializeMessagingTab();
 
-    // 将需要在 activateTab 中调用的函数挂载到 window
     window.loadMessagingTabData = loadMessagingTabData;
-    // 将更新未读消息数的函数也挂载到 window，以便 main.js 在登录后调用
     window.updateUnreadMessagesIndicator = updateUnreadMessagesIndicator;
 });
