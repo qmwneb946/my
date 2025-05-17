@@ -40,7 +40,7 @@
 
 ## 项目结构
 
-
+```
 .
 ├── cdn/                    # 前端静态资源 (CSS, JS)
 │   ├── css/
@@ -62,7 +62,7 @@
 │   ├── package-lock.json   # 依赖锁定
 │   └── wrangler.toml       # Wrangler 配置文件 (预期存在，用于部署)
 └── README.md               # 本文件
-
+```
 
 ## 环境配置 (预期)
 
