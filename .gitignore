@@ -139,4 +139,6 @@ dist
 wrangler.toml
 .env
 .dev.vars
+
 /.wrangler
+*/.wrangler
