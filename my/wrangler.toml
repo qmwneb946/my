@@ -13,7 +13,7 @@ enabled = true
 
 [vars]
 ACCESS_TOKEN_LIFETIME_SECONDS = "7200"
-CDN_BASE_URL = "https://cdn.qmwneb946.dpdns.org"
+CDN_BASE_URL = "https://cdn-e2r.pages.dev"
 ID_TOKEN_LIFETIME_SECONDS = "1800"
 OAUTH_ISSUER_NAME = "OAUTH_ISSUER_NAME"
 OAUTH_SIGNING_ALG = "RS256"

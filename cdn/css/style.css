@@ -534,7 +534,7 @@ body.dark-mode .new-client-secret-warning {
     overflow-y: auto;
     padding: 20px;
     display: flex;
-    flex-direction: column; /* 改为 column，新消息通过 JS 添加到末尾并滚动 */
+    flex-direction: column; /* 确保新消息在底部，通过JS滚动 */
 }
 .message-item {
     max-width: 70%;
