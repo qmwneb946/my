@@ -1,542 +1,783 @@
-/* 全局样式和颜色变量 / Global Styles and Color Variables */
 :root {
-    --primary-color: #1abc9c;
-    --primary-color-dark: #16a085;
-    --secondary-color: #95a5a6;
-    --success-color: #2ecc71;
-    --danger-color: #e74c3c;
-    --warning-color: #f39c12;
-    --info-color: #3498db;
-    --bg-color: #e0e6e8; /* 浅色模式背景 / Light mode background */
-    --surface-color: #ffffff; /* 浅色模式卡片/表面颜色 / Light mode card/surface color */
-    --text-color: #333; /* 浅色模式文本颜色 / Light mode text color */
-    --text-color-muted: #777;
-    --border-color: #bdc3c7;
-    --top-bar-bg-color: #ffffff;
-    --top-bar-text-color: #333333;
-    --heading-color: #2c3e50;
-    --input-placeholder-color: #a0aec0;
-    --otp-uri-bg-color: #f0f0f0;
-    --button-hover-bg-color: rgba(0,0,0,0.05);
-    --message-success-bg: #d4edda;
-    --message-success-text: #155724;
-    --message-success-border: #c3e6cb;
-    --message-error-bg: #f8d7da;
-    --message-error-text: #721c24;
-    --message-error-border: #f5c6cb;
-    --message-info-bg: #eaf5fc;
-    --message-info-text: #1c5a8d;
-    --message-info-border: #aed6f1;
-    --border-radius: 0.375rem; /* 6px */
-    --box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.05); /* 4px 12px */
-    --font-family-sans-serif: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+--primary-color: #1abc9c;
+--primary-color-dark: #16a085;
+--secondary-color: #7f8c8d;
+--accent-color: #3498db;
+--success-color: #2ecc71;
+--danger-color: #e74c3c;
+--warning-color: #f39c12;
+--info-color: #3498db;
+--text-color-base: #34495e;
+--text-color-muted: #7f8c8d;
+--text-color-inverted: #ffffff;
+--heading-color: #2c3e50;
+--bg-color-light: #f4f6f8;
+--surface-color-light: #ffffff;
+--border-color-light: #dfe4e8;
+--bg-color-dark: #1e272e;
+--surface-color-dark: #2c3a47;
+--border-color-dark: #4a5568;
+--font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+--font-family-mono: 'SFMono-Regular', Consolas, "Liberation Mono", Menlo, Courier, monospace;
+--border-radius: 6px;
+--box-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+--box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+--box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+--sidebar-width: 260px;
+--top-bar-height: 64px;
+--current-bg-color: var(--bg-color-light);
+--current-surface-color: var(--surface-color-light);
+--current-text-color: var(--text-color-base);
+--current-text-muted-color: var(--text-color-muted);
+--current-heading-color: var(--heading-color);
+--current-border-color: var(--border-color-light);
+--current-input-bg: var(--surface-color-light);
+--current-input-placeholder-color: #95a5a6;
 }
-
 body.dark-mode {
-    --primary-color: #1abc9c; /* 在深色模式下可以考虑调整主色调的饱和度或亮度 */
-    --primary-color-dark: #16a085;
-    --secondary-color: #718096; /* Tailwind gray-500 */
-    --success-color: #38a169; /* Tailwind green-600 */
-    --danger-color: #e53e3e; /* Tailwind red-600 */
-    --warning-color: #dd6b20; /* Tailwind orange-600 */
-    --info-color: #3182ce; /* Tailwind blue-600 */
-    --bg-color: #1a202c; /* Tailwind gray-900 */
-    --surface-color: #2d3748; /* Tailwind gray-800 */
-    --text-color: #e2e8f0; /* Tailwind gray-200 */
-    --text-color-muted: #a0aec0; /* Tailwind gray-400 */
-    --border-color: #4a5568; /* Tailwind gray-600 */
-    --top-bar-bg-color: #171923; /* 接近 Tailwind gray-900/black */
-    --top-bar-text-color: #e2e8f0;
-    --heading-color: #e2e8f0;
-    --input-placeholder-color: #718096; /* Tailwind gray-500 */
-    --otp-uri-bg-color: #222b37; /* 深色背景下的代码块 */
-    --button-hover-bg-color: rgba(255,255,255,0.08);
-    --message-success-bg: #1c3b2f;
-    --message-success-text: #a7f3d0;
-    --message-success-border: #2f6049;
-    --message-error-bg: #4a2224;
-    --message-error-text: #feb2b2;
-    --message-error-border: #7c2029;
-    --message-info-bg: #1e3a5f;
-    --message-info-text: #a6cff7;
-    --message-info-border: #2c5282;
-    --box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.2);
+--current-bg-color: var(--bg-color-dark);
+--current-surface-color: var(--surface-color-dark);
+--current-text-color: #e2e8f0;
+--current-text-muted-color: #a0aec0;
+--current-heading-color: #e2e8f0;
+--current-border-color: var(--border-color-dark);
+--current-input-bg: var(--surface-color-dark);
+--current-input-placeholder-color: #718096;
 }
-
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
-    font-family: var(--font-family-sans-serif);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    min-height: 100vh;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-size: 16px; /* 基础字体大小 / Base font size */
+font-family: var(--font-family-sans);
+line-height: 1.6;
+margin: 0;
+padding: 0;
+background-color: var(--current-bg-color);
+color: var(--current-text-color);
+font-size: 16px;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
-
-.top-bar {
-    background-color: var(--top-bar-bg-color);
-    color: var(--top-bar-text-color);
-    padding: 10px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.top-bar-left-controls {
-    display: flex;
-    align-items: center;
-}
-
-.top-bar .user-greeting {
-    font-size: 0.9rem;
-    margin-right: 15px;
-    margin-left: 10px;
-}
-
-.top-bar .user-greeting .username-text {
-    font-weight: 500;
-    color: var(--primary-color);
-}
-
-.top-bar .user-greeting .email-text {
-    font-size: 0.8em;
-    color: var(--text-color-muted);
-}
-
-.top-bar button.logout {
-    background-color: var(--danger-color);
-    color: white;
-    box-shadow: none;
-}
-.top-bar button.logout:hover {
-    background-color: color-mix(in srgb, var(--danger-color) 85%, black);
-}
-
-.container {
-    background: var(--surface-color);
-    padding: 30px 35px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    width: 100%;
-    max-width: 600px; /* 中心内容区域的最大宽度 / Max width for centered content */
-    margin: 90px auto 30px auto; /* 顶部留出 top-bar 的空间 / Top margin for top-bar */
-    transition: background-color 0.3s ease;
-}
-
-body.dark-mode .container {
-    box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.2);
-}
-
-h2, h3 {
-    color: var(--heading-color);
-    margin-bottom: 30px;
-    font-weight: 500;
-    text-align: center;
-    transition: color 0.3s ease;
-}
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; margin-top: 35px; }
-
-.form-group {
-    margin-bottom: 25px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--text-color);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"],
-input[type="tel"],
-input[type="url"], /* 为 URL 类型输入添加样式 */
-input[type="datetime-local"] {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    color: var(--text-color);
-    background-color: var(--surface-color); /* 确保输入框背景与容器一致 */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-}
-
-input:focus {
-    border-color: var(--primary-color);
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--primary-color) 25%, transparent);
-}
-
-input::placeholder {
-    color: var(--input-placeholder-color);
-    transition: color 0.3s ease;
-}
-input[disabled] {
-    background-color: var(--bg-color) !important; /* 使用 !important 确保覆盖 */
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-.checkbox-group input[type="checkbox"] {
-    margin-right: 8px;
-    width: auto; /* 避免复选框宽度100% */
-}
-.checkbox-group label {
-    margin-bottom: 0; /* 移除label的下边距 */
-    font-weight: normal; /* 普通字体重量 */
-}
-
-
-button, .button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-decoration: none;
-    display: inline-block;
-    text-align:center;
-}
-button:hover, .button:hover {
-    background-color: var(--primary-color-dark);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-button.full-width, .button.full-width {
-    width: 100%;
-    margin-top: 15px;
-}
-button.secondary, .button.secondary { background-color: var(--secondary-color); }
-button.secondary:hover, .button.secondary:hover { background-color: color-mix(in srgb, var(--secondary-color) 85%, black); }
-button.success, .button.success { background-color: var(--success-color); }
-button.success:hover, .button.success:hover { background-color: color-mix(in srgb, var(--success-color) 85%, black); }
-button.danger, .button.danger { background-color: var(--danger-color); }
-button.danger:hover, .button.danger:hover { background-color: color-mix(in srgb, var(--danger-color) 85%, black); }
-button.info, .button.info { background-color: var(--info-color); }
-button.info:hover, .button.info:hover { background-color: color-mix(in srgb, var(--info-color) 85%, black); }
-
-button.small, .button.small {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-}
-.top-bar button.small, .top-bar .button.small {
-    padding: 8px 15px; /* 顶部栏按钮的特定内边距 */
-    font-size: 0.85rem;
-}
-
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.message {
-    padding: 15px;
-    border-radius: var(--border-radius); /* 使用 CSS 变量 */
-    margin-bottom: 20px;
-    font-size: 1rem;
-    animation: fadeIn 0.5s ease-in;
-    text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-.message.success { background-color: var(--message-success-bg); color: var(--message-success-text); border: 1px solid var(--message-success-border); }
-.message.error   { background-color: var(--message-error-bg);   color: var(--message-error-text);   border: 1px solid var(--message-error-border); }
-.message.info    { background-color: var(--message-info-bg);    color: var(--message-info-text);    border: 1px solid var(--message-info-border); }
-.message code {
-    background-color: color-mix(in srgb, var(--text-color) 15%, transparent);
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-family: monospace;
-}
-
 .hidden { display: none !important; }
-
-.auth-section, .logged-in-section {
-    margin-bottom: 40px;
+.sr-only {
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border-width: 0;
 }
-
-.toggle-link {
-    text-align: center;
-    margin-top: 25px;
-    font-size: 0.9rem;
+a {
+color: var(--primary-color);
+text-decoration: none;
+transition: color 0.2s ease;
 }
-.toggle-link a {
-    color: var(--primary-color);
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: 500;
+a:hover { color: var(--primary-color-dark); text-decoration: underline; }
+h1, h2, h3, h4, h5, h6 {
+color: var(--current-heading-color);
+margin-top: 0;
+margin-bottom: 0.75em;
+font-weight: 600;
+line-height: 1.3;
 }
-.toggle-link a:hover { text-decoration: underline; }
-
-#qrcode-display {
-    background: white; /* 二维码背景通常是白色 */
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    display: inline-block; /* 使其可以居中 */
-    margin: 15px auto; /* 上下边距，左右自动居中 */
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+.app-wrapper {
+display: flex;
+min-height: 100vh;
 }
-body.dark-mode #qrcode-display {
-    /* 深色模式下，如果二维码库不处理背景，可能需要确保其可见性 */
-    /* qrcode.min.js 通常会自己处理背景色 (colorLight) */
+.app-wrapper.logged-out-layout .sidebar { display: none; }
+.app-wrapper.logged-out-layout .main-content { margin-left: 0; }
+.app-wrapper.logged-in-layout .sidebar { display: block; }
+.top-bar {
+background-color: var(--current-surface-color);
+height: var(--top-bar-height);
+border-bottom: 1px solid var(--current-border-color);
+padding: 0 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 1000;
+box-shadow: var(--box-shadow-sm);
 }
+.top-bar-left { display: flex; align-items: center; }
+.site-title { font-size: 1.25rem; font-weight: 600; color: var(--current-heading-color); margin-left: 10px; }
+.top-bar-right { display: flex; align-items: center; gap: 10px; }
+.sidebar-toggle-button, .theme-toggle-button, .user-menu-button, .messaging-button {
+background: none;
+border: none;
+color: var(--current-text-muted-color);
+padding: 8px;
+border-radius: var(--border-radius);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+}
+.sidebar-toggle-button:hover, .theme-toggle-button:hover, .user-menu-button:hover, .messaging-button:hover {
+background-color: color-mix(in srgb, var(--current-surface-color) 80%, var(--current-bg-color));
+color: var(--current-text-color);
+}
+.messaging-button.active {
+color: var(--primary-color);
+background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+/* Generic icon sizing classes, ensure they are applied */
+.h-5 { height: 1.25rem !important; /* 20px */ }
+.w-5 { width: 1.25rem !important; /* 20px */ }
+.h-6 { height: 1.5rem !important; /* 24px */ }
+.w-6 { width: 1.5rem !important; /* 24px */ }
+.mr-1 { margin-right: 0.25rem !important; /* 4px */ }
+.mr-2 { margin-right: 0.5rem !important; /* 8px */ }
 
-
+/* Specific targeting for sidebar SVGs to ensure size and alignment */
+.sidebar-nav .sidebar-link svg {
+    height: 1.25rem; /* Explicitly h-5 equivalent */
+    width: 1.25rem;  /* Explicitly w-5 equivalent */
+    margin-right: 0.5rem; /* Explicitly mr-2 equivalent */
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -0.05em; /* Fine-tune vertical alignment */
+    flex-shrink: 0;
+}
+/* Ensure top bar icons that are direct children of buttons are sized if needed */
+/* .sidebar-toggle-button svg, .theme-toggle-button svg, .user-menu-button svg, .messaging-button svg will use inline classes mostly */
+/* However, if specific sizing is needed beyond h-5/w-5, define here. For now, relying on inline classes. */
+.unread-badge {
+background-color: var(--danger-color);
+color: var(--text-color-inverted);
+border-radius: 50%;
+padding: 0px 5px;
+font-size: 0.75em;
+min-width: 1.7em;
+height: 1.7em;
+line-height: 1.7em;
+text-align: center;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+vertical-align: middle;
+box-sizing: border-box;
+}
+.messaging-button .unread-badge {
+position: absolute;
+top: 4px;
+right: 4px;
+}
+.contact-meta .unread-badge {
+margin-top: 2px;
+}
+.auth-actions a.button { margin-left: 10px; }
+.user-info-dropdown { position: relative; }
+.user-menu-button .username-text { margin-left: 6px; font-weight: 500; }
+.dropdown-menu {
+position: absolute;
+top: calc(100% + 8px);
+right: 0;
+background-color: var(--current-surface-color);
+border: 1px solid var(--current-border-color);
+border-radius: var(--border-radius);
+box-shadow: var(--box-shadow-md);
+min-width: 200px;
+z-index: 1010;
+padding: 8px 0;
+}
+.dropdown-user-email { padding: 8px 16px; font-size: 0.875rem; color: var(--current-text-muted-color); }
+.dropdown-divider { border-top: 1px solid var(--current-border-color); margin: 8px 0; }
+.dropdown-item {
+display: flex; /* Changed to flex for icon alignment */
+align-items: center; /* Vertically align icon and text */
+padding: 8px 16px;
+color: var(--current-text-color);
+font-size: 0.95rem;
+background: none;
+border: none;
+width: 100%;
+text-align: left;
+cursor: pointer;
+}
+.dropdown-item:hover { background-color: color-mix(in srgb, var(--current-surface-color) 85%, var(--current-bg-color)); }
+.dropdown-item.logout { color: var(--danger-color); }
+.dropdown-item svg { /* Style for SVGs inside dropdown items */
+    height: 1.25rem; /* h-5 */
+    width: 1.25rem;  /* w-5 */
+    margin-right: 0.5rem; /* mr-2 */
+    flex-shrink: 0;
+}
+.sidebar {
+width: var(--sidebar-width);
+background-color: var(--current-surface-color);
+border-right: 1px solid var(--current-border-color);
+position: fixed;
+top: var(--top-bar-height);
+left: 0;
+bottom: 0;
+padding: 20px 0;
+overflow-y: auto;
+z-index: 999;
+transition: transform 0.3s ease-in-out;
+box-shadow: var(--box-shadow-sm);
+}
+.sidebar.open { transform: translateX(0); }
+.sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
+.sidebar-nav .sidebar-link {
+display: flex;
+align-items: center;
+padding: 12px 20px;
+color: var(--current-text-muted-color);
+font-weight: 500;
+border-left: 3px solid transparent;
+transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.sidebar-nav .sidebar-link:hover {
+color: var(--primary-color);
+background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+.sidebar-nav .sidebar-link.selected {
+color: var(--primary-color);
+background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);
+border-left-color: var(--primary-color);
+font-weight: 600;
+}
+.sidebar-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.5);
+z-index: 998;
+}
+.main-content {
+flex-grow: 1;
+padding-top: var(--top-bar-height);
+transition: margin-left 0.3s ease-in-out;
+}
+.main-content .container {
+padding: 25px;
+margin: 0;
+max-width: none;
+background-color: var(--current-bg-color);
+box-shadow: none;
+border-radius: 0;
+}
+.app-wrapper.logged-in-layout .main-content {
+margin-left: var(--sidebar-width);
+}
+.app-wrapper.logged-out-layout .main-content {
+margin-left: 0;
+}
+.main-content h3 {
+font-size: 1.75rem;
+margin-bottom: 25px;
+border-bottom: 1px solid var(--current-border-color);
+padding-bottom: 10px;
+}
+.auth-section {
+display: flex;
+justify-content: center;
+align-items: flex-start;
+padding-top: 40px;
+}
+.form-container {
+background-color: var(--current-surface-color);
+padding: 30px 40px;
+border-radius: var(--border-radius);
+box-shadow: var(--box-shadow-md);
+width: 100%;
+max-width: 450px;
+}
+.form-container h2 { text-align: center; margin-bottom: 25px; font-size: 1.75rem; }
+.form-group { margin-bottom: 20px; }
+.form-group label {
+display: block;
+margin-bottom: 6px;
+font-weight: 500;
+font-size: 0.9rem;
+}
+input[type="email"], input[type="password"], input[type="text"], input[type="tel"], input[type="url"], input[type="search"], textarea {
+width: 100%;
+padding: 10px 12px;
+border: 1px solid var(--current-border-color);
+border-radius: var(--border-radius);
+font-size: 1rem;
+color: var(--current-text-color);
+background-color: var(--current-input-bg);
+transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, textarea:focus {
+border-color: var(--primary-color);
+outline: 0;
+box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+input::placeholder, textarea::placeholder { color: var(--current-input-placeholder-color); }
+input[readonly], input[disabled] {
+background-color: color-mix(in srgb, var(--current-input-bg) 80%, var(--current-bg-color)) !important;
+opacity: 0.7;
+cursor: not-allowed;
+}
+.input-hint { font-size: 0.8rem; color: var(--current-text-muted-color); margin-top: 4px; }
+.button {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+padding: 10px 20px;
+border: 1px solid transparent;
+border-radius: var(--border-radius);
+font-size: 1rem;
+font-weight: 500;
+cursor: pointer;
+transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+text-align: center;
+white-space: nowrap;
+}
+.button.primary { background-color: var(--primary-color); color: var(--text-color-inverted); border-color: var(--primary-color); }
+.button.primary:hover { background-color: var(--primary-color-dark); border-color: var(--primary-color-dark); }
+.button.secondary { background-color: var(--secondary-color); color: var(--text-color-inverted); border-color: var(--secondary-color); }
+.button.secondary:hover { background-color: color-mix(in srgb, var(--secondary-color) 85%, black); border-color: color-mix(in srgb, var(--secondary-color) 85%, black); }
+.button.success { background-color: var(--success-color); color: var(--text-color-inverted); border-color: var(--success-color); }
+.button.success:hover { background-color: color-mix(in srgb, var(--success-color) 85%, black); border-color: color-mix(in srgb, var(--success-color) 85%, black); }
+.button.danger { background-color: var(--danger-color); color: var(--text-color-inverted); border-color: var(--danger-color); }
+.button.danger:hover { background-color: color-mix(in srgb, var(--danger-color) 85%, black); border-color: color-mix(in srgb, var(--danger-color) 85%, black); }
+.button.full-width { width: 100%; margin-top: 10px; }
+.button.small { padding: 8px 16px; font-size: 0.875rem; }
+.button svg { /* Ensure SVGs in buttons are aligned */
+    height: 1.25rem; /* h-5 default */
+    width: 1.25rem;  /* w-5 default */
+    margin-right: 0.25rem; /* Optional: if text follows */
+}
+.form-actions { margin-top: 20px; display: flex; gap: 10px; justify-content: flex-start; }
+.toggle-link { text-align: center; margin-top: 20px; font-size: 0.9rem; }
+.message {
+padding: 12px 18px;
+border-radius: var(--border-radius);
+margin-bottom: 20px;
+font-size: 0.95rem;
+text-align: center;
+border: 1px solid transparent;
+}
+.message.success { background-color: color-mix(in srgb, var(--success-color) 15%, transparent); color: var(--success-color); border-color: var(--success-color); }
+.message.error { background-color: color-mix(in srgb, var(--danger-color) 15%, transparent); color: var(--danger-color); border-color: var(--danger-color); }
+.message.info { background-color: color-mix(in srgb, var(--info-color) 15%, transparent); color: var(--info-color); border-color: var(--info-color); }
+.account-content .tab-pane { padding: 15px; }
+.setting-block { margin-bottom: 30px; padding: 20px; background-color: var(--current-surface-color); border-radius: var(--border-radius); box-shadow: var(--box-shadow-sm); }
+.setting-block h4 { font-size: 1.15rem; margin-bottom: 15px; color: var(--current-heading-color); }
+.description-text { font-size: 0.9rem; color: var(--current-text-muted-color); margin-bottom: 15px; }
+.status-display { margin-bottom: 15px; font-size: 0.95rem; }
+#2fa-current-status { font-weight: bold; }
+#2fa-controls button { margin-right: 10px; }
 .otpauth-uri-text {
-    word-break: break-all;
-    font-family: monospace;
-    background: var(--otp-uri-bg-color);
-    color: var(--text-color); /* 使用文本颜色变量 */
-    padding: 10px;
-    border-radius: 4px;
-    margin: 10px 0;
-    display: block;
-    border: 1px dashed var(--border-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+word-break: break-all; font-family: var(--font-family-mono);
+background: color-mix(in srgb, var(--current-bg-color) 90%, var(--current-surface-color));
+padding: 10px; border-radius: 4px; margin: 10px 0; display: block;
+border: 1px dashed var(--current-border-color);
 }
-
-#theme-toggle-button {
-    padding: 0.5rem; /* 8px */
-    border-radius: 9999px; /* 圆形按钮 */
-    background-color: transparent;
-    border: 1px solid transparent; /* 无边框，但保留空间 */
-    color: var(--top-bar-text-color);
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
+#qrcode-display {
+background: white; padding: 10px; border: 1px solid var(--border-color-light);
+display: inline-block; margin: 15px auto;
 }
-#theme-toggle-button:hover {
-    background-color: var(--button-hover-bg-color);
+body.dark-mode #qrcode-display { background: var(--surface-color-light); border-color: var(--border-color-light); }
+.api-key-display { margin-top: 15px; }
+.api-key-value-container { display: flex; align-items: center; margin-bottom: 10px; }
+.api-key-value-container input[type="text"] { flex-grow: 1; margin-right: 10px; }
+.external-link { color: var(--accent-color); font-weight: 500; }
+.external-link:hover { color: color-mix(in srgb, var(--accent-color) 80%, black); }
+hr.section-divider { border: none; border-top: 1px solid var(--current-border-color); margin: 30px 0; }
+.security-settings-list {
+list-style: none;
+padding: 0;
+margin: 0;
 }
-#theme-toggle-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--primary-color); /* 焦点指示器 */
+.security-setting-item {
+background-color: var(--current-surface-color);
+border: 1px solid var(--current-border-color);
+border-radius: var(--border-radius);
+margin-bottom: 15px;
+box-shadow: var(--box-shadow-sm);
 }
-#theme-toggle-button svg {
-    height: 1.25rem; /* 20px */
-    width: 1.25rem;  /* 20px */
-    display: block; /* 移除SVG下方多余空间 */
+.setting-entry {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 15px 20px;
+cursor: pointer;
+font-weight: 500;
+color: var(--current-heading-color);
+transition: background-color 0.2s ease;
 }
-
-
-.account-tabs {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 25px 0;
-    border-bottom: 1px solid var(--border-color);
+.setting-entry:hover {
+background-color: color-mix(in srgb, var(--current-surface-color) 95%, var(--current-bg-color));
 }
-.account-tabs li .tab-entry {
-    padding: 12px 18px;
-    display: block;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
-    color: var(--text-color-muted);
-    font-weight: 500;
-    font-size: 1rem;
-    margin-right: 10px; /* 选项卡之间的间距 */
+.setting-entry .entry-title {
+flex-grow: 1;
 }
-.account-tabs li .tab-entry:hover { color: var(--primary-color); }
-.account-tabs li .tab-entry.selected {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+.setting-entry .entry-status {
+font-size: 0.85rem;
+color: var(--current-text-muted-color);
+margin-right: 10px;
 }
-
-.tab-pane { padding-top: 10px; }
-.tab-pane > h3 {
-    text-align:left;
-    font-size: 1.3em;
-    margin-bottom: 20px;
-    margin-top:0;
+.setting-entry .entry-arrow {
+font-size: 0.8rem;
+transition: transform 0.2s ease-in-out;
 }
-.tab-pane > .api-key-section > h4,
-.tab-pane > #register-oauth-client-form-container > h4, /* OAuth 应用注册表单标题 */
-.tab-pane > #registered-oauth-clients-list-title { /* OAuth 应用列表标题 */
-    font-size: 1.2em;
-    color: var(--heading-color);
-    margin-top: 10px;
-    margin-bottom: 15px;
-    text-align: left;
+.setting-entry.open .entry-arrow {
+transform: rotate(90deg);
 }
-
-
-.external-paste-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
+.setting-content-panel {
+padding: 0 20px 20px 20px;
+border-top: 1px solid var(--current-border-color);
+background-color: color-mix(in srgb, var(--current-surface-color) 98%, var(--current-bg-color));
 }
-.external-paste-link:hover {
-    text-decoration: underline;
-    color: var(--primary-color-dark);
-}
-
-.api-key-value-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.api-key-value-container input[type="text"] {
-    flex-grow: 1;
-    margin-right: 10px;
-}
-.api-key-display-inline {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.api-key-display-inline h5 {
-    margin:0;
-    font-size: 1em;
-    font-weight: 500;
-    color: var(--text-color);
-    margin-bottom: 8px; /* 与输入框对齐 */
-}
-
-.cf-turnstile {
-    margin-bottom: 15px;
-    min-height: 65px; /* 确保为小部件留出空间 */
-}
-
-hr.section-divider {
-    border: none;
-    border-top: 1px solid var(--border-color);
-    margin: 40px 0 30px 0;
-}
-
-/* 我的应用部分特定样式 / Specific styles for My Applications section */
 .application-card {
-    background-color: color-mix(in srgb, var(--surface-color) 95%, var(--bg-color));
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+background-color: color-mix(in srgb, var(--current-surface-color) 95%, var(--current-bg-color));
+border: 1px solid var(--current-border-color);
+border-radius: var(--border-radius);
+padding: 15px; margin-bottom: 15px;
 }
-.application-card h4 {
-    font-size: 1.1em;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-.application-card p {
-    font-size: 0.9em;
-    margin-bottom: 5px;
-    color: var(--text-color-muted);
-    word-break: break-word; /* 防止长字符串溢出 */
-}
+.application-card h4 { font-size: 1.1em; color: var(--primary-color); margin-top: 0; margin-bottom: 8px; }
+.application-card p { font-size: 0.9em; margin-bottom: 5px; color: var(--current-text-muted-color); word-break: break-word; }
 .application-card code {
-    background-color: color-mix(in srgb, var(--text-color) 10%, transparent);
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-family: monospace;
-    word-break: break-all; /* 防止 client_id 过长溢出 */
+background-color: color-mix(in srgb, var(--current-text-color) 10%, transparent);
+padding: 2px 5px; border-radius: 3px; font-family: var(--font-family-mono); word-break: break-all;
 }
 .new-client-secret-warning {
-    background-color: var(--warning-color);
-    color: white;
-    padding: 10px;
-    border-radius: var(--border-radius);
-    margin-top: 15px;
-    font-size: 0.9em;
+background-color: var(--warning-color); color: var(--text-color-inverted);
+padding: 10px; border-radius: var(--border-radius); margin-top: 15px; font-size: 0.9em;
 }
 body.dark-mode .new-client-secret-warning {
-     background-color: color-mix(in srgb, var(--warning-color) 70%, black);
-     color: var(--text-color); /* 深色模式下确保文本可读 */
+background-color: color-mix(in srgb, var(--warning-color) 70%, black);
+color: var(--current-text-color);
 }
-
-
-/* 响应式调整 / Responsive Adjustments */
-@media (max-width: 600px) {
-    .top-bar {
-        padding: 8px 15px;
-        flex-direction: column;
-        align-items: stretch; /* 使子元素宽度充满 */
-    }
-    .top-bar-left-controls {
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 8px; /* 在垂直排列时添加间距 */
-    }
-    .top-bar .user-greeting {
-        margin-left: 0;
-        margin-right: 0;
-        text-align: center; /* 居中问候语 */
-        width: 100%; /* 确保占满以便居中 */
-    }
-    .top-bar-auth-buttons,
-    .top-bar #top-bar-logout-button {
-        width: 100%;
-        margin-top: 5px;
-    }
-    .top-bar-auth-buttons a {
-        flex-grow: 1; /* 使注册和登录按钮平分空间 */
-        text-align: center;
-    }
-
-    .container {
-        padding: 20px 25px;
-        margin-top: 140px; /* 为更高的 top-bar 调整 */
-        /* 确保在小屏幕上，如果 top-bar 内容换行，container 不会被遮挡 */
-    }
-     /* 确保大屏幕恢复正常边距 */
-    @media (min-width: 601px) {
-        .container { margin-top: 90px; }
-    }
-
-
-    h2 { font-size: 1.6rem; }
-    h3 { font-size: 1.25rem; }
-
-    .account-tabs {
-        flex-direction: column; /* 垂直排列选项卡 */
-        border-bottom: none; /* 移除底边框 */
-    }
-    .account-tabs li .tab-entry {
-        border-bottom: 1px solid var(--border-color); /* 每个选项卡底部加边框 */
-        margin-right:0;
-        text-align:center; /* 居中文本 */
-    }
-    .account-tabs li:last-child .tab-entry {
-        border-bottom: none; /* 最后一个选项卡无底边框 */
-    }
-    .account-tabs li .tab-entry.selected {
-        border-bottom: 3px solid var(--primary-color); /* 选中状态的强调 */
-    }
-
-    .api-key-value-container {
-        flex-direction: column;
-        align-items: stretch; /* 使子元素宽度充满 */
-    }
-    .api-key-value-container input[type="text"] {
-        margin-right: 0;
-        margin-bottom: 10px; /* 输入框和按钮之间的间距 */
-    }
-    .api-key-display-inline {
-        flex-direction: column;
-        align-items: stretch;
-    }
+.messaging-tab-header {
+display: flex;
+align-items: center;
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid var(--current-border-color);
+}
+.messaging-tab-header h3 {
+margin-bottom: 0;
+border-bottom: none;
+padding-bottom: 0;
+font-size: 1.75rem;
+}
+.messaging-tab-header svg {
+color: var(--primary-color);
+height: 28px;
+width: 28px;
+margin-right: 10px;
+}
+.new-conversation-trigger {
+margin-bottom: 25px;
+display: flex;
+gap: 10px;
+align-items: center;
+}
+.new-conversation-trigger input[type="email"] {
+flex-grow: 1;
+font-size: 0.95rem;
+padding: 10px 12px;
+}
+.new-conversation-trigger button.button.small {
+padding: 10px 15px;
+font-size: 0.9rem;
+flex-shrink: 0;
+}
+.messaging-layout-new {
+display: flex;
+height: calc(100vh - var(--top-bar-height) - 230px);
+min-height: 450px;
+border: 1px solid var(--current-border-color);
+border-radius: var(--border-radius);
+background-color: var(--current-surface-color);
+overflow: hidden;
+box-shadow: var(--box-shadow-sm);
+}
+.messaging-contacts-panel {
+width: 320px;
+min-width: 280px;
+border-right: 1px solid var(--current-border-color);
+display: flex;
+flex-direction: column;
+background-color: var(--current-surface-color);
+}
+.contact-search-bar {
+padding: 12px 15px;
+border-bottom: 1px solid var(--current-border-color);
+display: flex;
+gap: 8px;
+background-color: color-mix(in srgb, var(--current-surface-color) 95%, var(--current-bg-color));
+}
+.contact-search-bar input[type="search"] {
+flex-grow: 1;
+padding: 8px 10px;
+font-size: 0.9rem;
+}
+.contact-search-bar button {
+padding: 8px 12px;
+font-size: 0.85rem;
+}
+.recent-contacts-title {
+padding: 12px 15px;
+font-size: 0.75rem;
+font-weight: 600;
+color: var(--current-text-muted-color);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+margin-bottom: 0;
+border-bottom: 1px solid var(--current-border-color);
+background-color: color-mix(in srgb, var(--current-surface-color) 98%, var(--current-bg-color));
+}
+.contact-list {
+flex-grow: 1;
+overflow-y: auto;
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+.contact-list li {
+display: flex;
+align-items: center;
+padding: 10px 15px;
+cursor: pointer;
+border-bottom: 1px solid var(--current-border-color);
+transition: background-color 0.2s ease;
+}
+.contact-list li:last-child { border-bottom: none; }
+.contact-list li:hover { background-color: color-mix(in srgb, var(--current-surface-color) 90%, var(--current-bg-color)); }
+.contact-list li.selected { background-color: var(--primary-color); color: var(--text-color-inverted); }
+.contact-list li.selected .contact-name,
+.contact-list li.selected .contact-last-message,
+.contact-list li.selected .contact-meta .contact-time,
+.contact-list li.selected .unread-badge { color: var(--text-color-inverted) !important; }
+.contact-list li.selected .contact-avatar { border: 2px solid var(--text-color-inverted); }
+.contact-avatar {
+width: 38px;
+height: 38px;
+border-radius: 50%;
+background-color: var(--secondary-color);
+color: var(--text-color-inverted);
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+margin-right: 12px;
+font-size: 1rem;
+overflow: hidden;
+flex-shrink: 0;
+}
+.contact-avatar img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.contact-info {
+flex-grow: 1;
+overflow: hidden;
+}
+.contact-name {
+font-weight: 500;
+display: block; margin-bottom: 2px; color: var(--current-heading-color);
+white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+font-size: 0.95rem;
+}
+.contact-last-message {
+font-size: 0.8rem;
+color: var(--current-text-muted-color);
+white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display:block;
+}
+.contact-meta {
+margin-left: auto;
+text-align: right;
+font-size: 0.75rem;
+color: var(--current-text-muted-color);
+min-width: 50px;
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+justify-content: center;
+line-height: 1.3;
+}
+.contact-time {
+display: block;
+margin-bottom: 3px;
+}
+.message-display-panel {
+flex-grow: 1;
+display: flex;
+flex-direction: column;
+background-color: var(--current-bg-color);
+}
+.messages-list {
+flex-grow: 1; overflow-y: auto; padding: 20px;
+display: flex; flex-direction: column;
+}
+.messages-list .messages-loading-indicator-wrapper,
+.messages-list .load-more-messages-button-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+.messages-list .messages-loading-indicator-wrapper .spinner {
+    border: 3px solid var(--current-border-color);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+.messages-list .load-more-messages-button-wrapper .load-more-messages-button {
+    font-size: 0.8em;
+    padding: 6px 12px;
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.messages-list .load-more-messages-button-wrapper .load-more-messages-button:hover {
+    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.empty-messages-placeholder {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+color: var(--current-text-muted-color);
+height: 100%;
+padding: 20px;
+}
+.empty-messages-placeholder svg {
+margin-bottom: 15px;
+opacity: 0.6;
+width: 64px;
+height: 64px;
+}
+.empty-messages-placeholder p {
+font-size: 1.2em;
+font-weight: 500;
+margin-bottom: 8px;
+color: var(--current-heading-color);
+}
+.empty-messages-placeholder span {
+font-size: 0.9em;
+max-width: 300px;
+}
+.message-item {
+max-width: 75%; padding: 8px 12px; border-radius: 12px;
+margin-bottom: 10px; line-height: 1.5; word-wrap: break-word;
+}
+.message-item.sent {
+background-color: var(--primary-color); color: var(--text-color-inverted);
+align-self: flex-end; border-bottom-right-radius: 4px;
+}
+.message-item.received {
+background-color: var(--current-surface-color);
+color: var(--current-text-color);
+align-self: flex-start; border-bottom-left-radius: 4px;
+border: 1px solid var(--current-border-color);
+}
+.message-sender { font-size: 0.75em; color: var(--current-text-muted-color); margin-bottom: 2px; display: block; }
+body.dark-mode .message-item.sent .message-sender { color: rgba(255,255,255,0.6); }
+.message-content { font-size: 0.95em; }
+.message-content p:first-child { margin-top: 0; }
+.message-content p:last-child { margin-bottom: 0; }
+.message-content ul, .message-content ol { margin: 8px 0 8px 20px; padding-left: 0; }
+.message-content pre {
+background-color: color-mix(in srgb, var(--current-text-color) 8%, transparent);
+border: 1px solid var(--current-border-color);
+padding: 8px; border-radius: 4px; overflow-x: auto;
+font-size: 0.85em; margin: 8px 0; font-family: var(--font-family-mono);
+}
+body.dark-mode .message-content pre {
+background-color: color-mix(in srgb, var(--current-surface-color) 80%, var(--current-bg-color));
+}
+.message-time { font-size: 0.7rem; color: var(--current-text-muted-color); margin-top: 4px; text-align: right; display: block; opacity: 0.8; }
+body.dark-mode .message-item.sent .message-time { color: rgba(255,255,255,0.5); }
+.message-input-area {
+display: flex; padding: 15px;
+border-top: 1px solid var(--current-border-color);
+background-color: var(--current-surface-color);
+}
+.message-input-area textarea {
+flex-grow: 1; padding: 10px;
+border: 1px solid var(--current-border-color);
+border-radius: var(--border-radius);
+resize: none; margin-right: 10px;
+font-family: var(--font-family-sans); font-size: 0.95rem;
+min-height: 42px; max-height: 120px; overflow-y: auto;
+background-color: var(--current-input-bg); color: var(--current-text-color);
+}
+.message-input-area button { padding: 10px 18px; }
+.api-usage-section pre {
+background-color: color-mix(in srgb, var(--current-bg-color) 95%, var(--current-surface-color));
+color: var(--current-text-color);
+padding: 15px; border-radius: var(--border-radius); overflow-x: auto;
+font-family: var(--font-family-mono); font-size: 0.875em;
+border: 1px solid var(--current-border-color); margin-bottom: 15px;
+}
+.api-usage-section code.inline-code {
+background-color: color-mix(in srgb, var(--current-text-color) 10%, transparent);
+padding: 2px 5px; border-radius: 3px; font-family: var(--font-family-mono);
+}
+.admin-panel-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
+.admin-panel-table th, .admin-panel-table td { border: 1px solid var(--current-border-color); padding: 8px 12px; text-align: left; }
+.admin-panel-table th { background-color: var(--current-surface-color); font-weight: 600; }
+.admin-panel-table tr:nth-child(even) { background-color: color-mix(in srgb, var(--current-surface-color) 95%, var(--current-bg-color));}
+.admin-panel-table td code { background-color: color-mix(in srgb, var(--current-text-color) 10%, transparent); padding: 2px 4px; border-radius: 3px; font-family: var(--font-family-mono); }
+.status-active { color: var(--success-color); font-weight: bold; }
+.status-inactive, .status-suspended { color: var(--danger-color); font-weight: bold; }
+.admin-actions button { margin-right: 5px; }
+@media (max-width: 768px) {
+.sidebar {
+transform: translateX(-100%);
+top: 0;
+height: 100vh;
+border-right: 1px solid var(--current-border-color);
+}
+.sidebar.open {
+transform: translateX(0);
+}
+.app-wrapper.logged-in-layout .main-content {
+margin-left: 0;
+}
+.app-wrapper.logged-out-layout .main-content {
+margin-left: 0;
+}
+.messaging-layout-new {
+flex-direction: column;
+height: calc(100vh - var(--top-bar-height) - 70px);
+}
+.messaging-contacts-panel {
+width: 100%; max-width: none; height: 40%; min-height: 250px;
+border-right: none; border-bottom: 1px solid var(--current-border-color);
+}
+.message-display-panel { height: 60%; }
+}
+@media (min-width: 769px) {
+.sidebar-toggle-button { display: none; }
+.sidebar-overlay { display: none !important; }
+.sidebar { transform: translateX(0); }
+}
+#login-form-el .cf-turnstile,
+#register-form-el .cf-turnstile {
+margin-left: 30px;
+margin-right: 30px;
+margin-top: 20px;
+margin-bottom: 20px;
 }

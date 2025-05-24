@@ -1,163 +1,229 @@
-// 前端脚本 - “API 密钥”选项卡相关逻辑
-// Frontend Script - "API Keys" Tab Logic
-
-// DOM 元素引用 (在 DOMContentLoaded 中或首次使用时获取)
+let apiKeysSettingsList;
 let createPasteApiKeyForm, newlyCreatedApiKeyDisplayDiv, newApiKeyInput;
-let cloudPcKeyStatusArea, createCloudPcKeyFormContainer, createCloudPcKeyForm, existingCloudPcKeyDisplayDiv;
+let cloudPcKeyStatusArea, createCloudPcKeyForm, existingCloudPcKeyDisplayDiv;
 let cloudPcApiKeyInput, cloudPcUsageCountSpan;
-
-/**
- * 初始化 API 密钥选项卡的数据。
- * 当选项卡被激活时由 main.js 中的 activateTab 调用。
- */
-function loadApiKeysTabData() {
-    // 加载 Cloud PC 密钥状态
-    loadCloudPcKeyStatus();
-    // 确保创建云剪贴板密钥的表单中的 Turnstile 被渲染（如果可见）
-    const pasteApiKeyTurnstile = document.querySelector('#create-paste-api-key-form .cf-turnstile');
-    if (pasteApiKeyTurnstile && pasteApiKeyTurnstile.offsetParent !== null) { // 检查元素是否可见
-         if (typeof renderTurnstile === 'function') renderTurnstile(pasteApiKeyTurnstile);
-    }
-}
-
-
-/**
- * 处理创建云剪贴板 API 密钥表单提交。
- */
-async function handleCreatePasteApiKeySubmit(event) {
-    event.preventDefault();
-    if (typeof clearMessages === 'function') clearMessages();
-    if (newlyCreatedApiKeyDisplayDiv) newlyCreatedApiKeyDisplayDiv.classList.add('hidden');
-
-    const form = event.target;
-    const turnstileContainer = form.querySelector('.cf-turnstile');
-    const turnstileToken = form.querySelector('[name="cf-turnstile-response"]')?.value;
-
-    if (!turnstileToken && turnstileContainer) {
-        if (typeof showMessage === 'function') showMessage('人机验证失败，请重试。', 'error');
-        if (typeof resetTurnstileInContainer === 'function') resetTurnstileInContainer(turnstileContainer);
-        return;
-    }
-
-    const requestBody = { turnstileToken };
-    if (typeof apiCall === 'function') {
-        const { ok, data, status } = await apiCall('/api/paste-keys', 'POST', requestBody);
-        if (turnstileContainer && typeof resetTurnstileInContainer === 'function') resetTurnstileInContainer(turnstileContainer);
-
-        if (ok) {
-            if (data.success && data.data && data.data.key) {
-                if (newApiKeyInput) newApiKeyInput.value = data.data.key;
-                if (newlyCreatedApiKeyDisplayDiv) newlyCreatedApiKeyDisplayDiv.classList.remove('hidden');
-                if (typeof showMessage === 'function') showMessage('云剪贴板 API 密钥创建成功！请复制并妥善保管。', 'success');
-            } else if (data.success && data.data && data.data.name) {
-                 if (typeof showMessage === 'function') showMessage(`API密钥 "${window.escapeHtml(data.data.name)}" 已在外部服务创建成功。但服务未在响应中直接返回密钥值。`, 'info', true);
-            } else if (data.message && status >= 200 && status < 300) {
-                 if (typeof showMessage === 'function') showMessage(`API密钥创建操作已发送: ${window.escapeHtml(data.message)}`, 'info', true);
-            } else {
-                 if (typeof showMessage === 'function') showMessage(data.error || data.message || `创建API密钥时外部服务返回了预料之外的响应 (状态: ${status})`, 'warning');
-                console.warn("Unexpected response structure from external API for paste key:", data);
-            }
-        } else {
-            if (typeof showMessage === 'function') showMessage(data.error || data.message || `代理创建云剪贴板API密钥时出错 (状态: ${status})`, 'error');
-        }
-    }
-}
-
-/**
- * 加载 Cloud PC 密钥状态。
- */
-async function loadCloudPcKeyStatus() {
-    cloudPcKeyStatusArea = cloudPcKeyStatusArea || document.getElementById('cloud-pc-key-status-area');
-    createCloudPcKeyFormContainer = createCloudPcKeyFormContainer || document.getElementById('create-cloud-pc-key-form-container');
-    existingCloudPcKeyDisplayDiv = existingCloudPcKeyDisplayDiv || document.getElementById('existing-cloud-pc-key-display');
-    cloudPcApiKeyInput = cloudPcApiKeyInput || document.getElementById('cloud-pc-api-key-value');
-    cloudPcUsageCountSpan = cloudPcUsageCountSpan || document.getElementById('cloud-pc-usage-count');
-
-
-    if (!cloudPcKeyStatusArea) return;
-    cloudPcKeyStatusArea.innerHTML = '<p>正在加载 Cloud PC 密钥状态...</p>';
-    if (createCloudPcKeyFormContainer) createCloudPcKeyFormContainer.classList.add('hidden');
-    if (existingCloudPcKeyDisplayDiv) existingCloudPcKeyDisplayDiv.classList.add('hidden');
-
-    const createFormTurnstile = createCloudPcKeyFormContainer?.querySelector('.cf-turnstile');
-    if (createFormTurnstile && typeof removeTurnstile === 'function') removeTurnstile(createFormTurnstile);
-
-    if (typeof apiCall === 'function') {
-        const { ok, data, status } = await apiCall('/api/cloudpc-key');
-        if (ok) {
-            if (data.apiKey) {
-                cloudPcKeyStatusArea.innerHTML = ''; // 清空加载状态
-                if (cloudPcApiKeyInput) cloudPcApiKeyInput.value = data.apiKey;
-                if (cloudPcUsageCountSpan) cloudPcUsageCountSpan.textContent = data.usageCount;
-                if (existingCloudPcKeyDisplayDiv) existingCloudPcKeyDisplayDiv.classList.remove('hidden');
-                if (createCloudPcKeyFormContainer) createCloudPcKeyFormContainer.classList.add('hidden');
-            } else {
-                cloudPcKeyStatusArea.innerHTML = '<p>您尚未创建 Cloud PC 密钥。</p>';
-                if (createCloudPcKeyFormContainer) {
-                    createCloudPcKeyFormContainer.classList.remove('hidden');
-                    if (createFormTurnstile && typeof renderTurnstile === 'function') renderTurnstile(createFormTurnstile);
-                }
-            }
-        } else {
-            cloudPcKeyStatusArea.innerHTML = `<p style="color: var(--danger-color);">加载 Cloud PC 密钥状态失败: ${data.error || '状态码 ' + status}</p>`;
-        }
-    }
-}
-
-/**
- * 处理创建 Cloud PC 密钥表单提交。
- */
-async function handleCreateCloudPcKeySubmit(event) {
-    event.preventDefault();
-    if (typeof clearMessages === 'function') clearMessages();
-
-    const form = event.target;
-    const turnstileContainer = form.querySelector('.cf-turnstile');
-    const turnstileToken = form.querySelector('[name="cf-turnstile-response"]')?.value;
-
-    if (!turnstileToken && turnstileContainer) {
-        if (typeof showMessage === 'function') showMessage('人机验证失败，请重试。', 'error');
-        if (typeof resetTurnstileInContainer === 'function') resetTurnstileInContainer(turnstileContainer);
-        return;
-    }
-
-    if (typeof apiCall === 'function') {
-        const { ok, data, status } = await apiCall('/api/cloudpc-key', 'POST', { turnstileToken });
-        if (turnstileContainer && typeof resetTurnstileInContainer === 'function') resetTurnstileInContainer(turnstileContainer);
-
-        if (ok && data.success) {
-            if (typeof showMessage === 'function') showMessage(data.message || 'Cloud PC 密钥创建成功！', 'success');
-            loadCloudPcKeyStatus(); // 重新加载状态以显示新密钥
-        } else {
-            if (typeof showMessage === 'function') showMessage(data.error || `创建 Cloud PC 密钥失败 (${status})`);
-        }
-    }
-}
-
-
-// DOMContentLoaded 后绑定事件
-document.addEventListener('DOMContentLoaded', () => {
-    // 获取 DOM 元素
+let cloudPcKeyEntryStatusElement;
+let btnFetchGreenHubKeys, greenHubCodesDisplayDiv;
+function initializeApiKeysTab() {
+    apiKeysSettingsList = document.querySelector('#tab-content-api-keys .security-settings-list');
     createPasteApiKeyForm = document.getElementById('create-paste-api-key-form');
     newlyCreatedApiKeyDisplayDiv = document.getElementById('newly-created-api-key-display');
     newApiKeyInput = document.getElementById('new-api-key-value');
-
     cloudPcKeyStatusArea = document.getElementById('cloud-pc-key-status-area');
-    createCloudPcKeyFormContainer = document.getElementById('create-cloud-pc-key-form-container');
     createCloudPcKeyForm = document.getElementById('create-cloud-pc-key-form');
     existingCloudPcKeyDisplayDiv = document.getElementById('existing-cloud-pc-key-display');
     cloudPcApiKeyInput = document.getElementById('cloud-pc-api-key-value');
     cloudPcUsageCountSpan = document.getElementById('cloud-pc-usage-count');
-
-    // 绑定事件监听器
+    cloudPcKeyEntryStatusElement = document.getElementById('cloud-pc-key-entry-status');
+    btnFetchGreenHubKeys = document.getElementById('btn-fetch-greenhub-keys');
+    greenHubCodesDisplayDiv = document.getElementById('greenhub-codes-display');
+    if (apiKeysSettingsList) {
+        const entries = apiKeysSettingsList.querySelectorAll('.setting-entry');
+        entries.forEach(entry => {
+            entry.removeEventListener('click', handleApiKeyEntryClick);
+            entry.addEventListener('click', handleApiKeyEntryClick);
+            const arrow = entry.querySelector('.entry-arrow');
+            if (arrow) arrow.textContent = '▶';
+            const targetId = entry.dataset.target;
+            const targetPanel = document.getElementById(targetId);
+            if (targetPanel) {
+                targetPanel.classList.add('hidden');
+                entry.classList.remove('open');
+            }
+        });
+    }
     if (createPasteApiKeyForm) {
+        createPasteApiKeyForm.removeEventListener('submit', handleCreatePasteApiKeySubmit);
         createPasteApiKeyForm.addEventListener('submit', handleCreatePasteApiKeySubmit);
     }
     if (createCloudPcKeyForm) {
+        createCloudPcKeyForm.removeEventListener('submit', handleCreateCloudPcKeySubmit);
         createCloudPcKeyForm.addEventListener('submit', handleCreateCloudPcKeySubmit);
     }
-
-    // 将需要在 activateTab 中调用的函数挂载到 window
-    // 或者 main.js 可以直接管理这些函数的调用时机 (例如，通过自定义事件)
+    if (btnFetchGreenHubKeys) {
+        btnFetchGreenHubKeys.removeEventListener('click', handleFetchGreenHubKeysClick);
+        btnFetchGreenHubKeys.addEventListener('click', handleFetchGreenHubKeysClick);
+    }
+    if (newlyCreatedApiKeyDisplayDiv) newlyCreatedApiKeyDisplayDiv.classList.add('hidden');
+    if (greenHubCodesDisplayDiv) greenHubCodesDisplayDiv.innerHTML = '<p class="placeholder-text">点击按钮获取激活码。</p>';
+}
+function handleApiKeyEntryClick(event) {
+    const entry = event.currentTarget;
+    const targetId = entry.dataset.target;
+    const targetPanel = document.getElementById(targetId);
+    const arrow = entry.querySelector('.entry-arrow');
+    if (targetPanel) {
+        const isOpen = !targetPanel.classList.contains('hidden');
+        targetPanel.classList.toggle('hidden');
+        entry.classList.toggle('open', !targetPanel.classList.contains('hidden'));
+        if (arrow) arrow.textContent = targetPanel.classList.contains('hidden') ? '▶' : '▼';
+        if (targetId === 'cloud-pc-key-content-panel' && !targetPanel.classList.contains('hidden') && !targetPanel.dataset.loaded) {
+            loadCloudPcKeyStatus();
+            targetPanel.dataset.loaded = 'true';
+        }
+        if (targetId === 'paste-api-key-content-panel' && !targetPanel.classList.contains('hidden')) {
+            const turnstile = targetPanel.querySelector('.cf-turnstile');
+            if (turnstile && typeof window.renderTurnstile === 'function') {
+                window.renderTurnstile(turnstile);
+            }
+        }
+    }
+}
+function loadApiKeysTabData() {
+    initializeApiKeysTab();
+}
+async function handleCreatePasteApiKeySubmit(event) {
+    event.preventDefault();
+    if (typeof window.clearMessages === 'function') window.clearMessages();
+    if (newlyCreatedApiKeyDisplayDiv) newlyCreatedApiKeyDisplayDiv.classList.add('hidden');
+    const form = event.target;
+    const turnstileContainer = form.querySelector('.cf-turnstile');
+    const turnstileToken = form.querySelector('[name="cf-turnstile-response"]')?.value;
+    if (!turnstileToken && turnstileContainer) {
+        if (typeof window.showMessage === 'function') window.showMessage('人机验证失败，请重试。', 'error');
+        if (typeof window.resetTurnstileInContainer === 'function') window.resetTurnstileInContainer(turnstileContainer);
+        return;
+    }
+    const requestBody = { turnstileToken };
+    if (typeof window.apiCall === 'function') {
+        const { ok, data, status } = await window.apiCall('/api/paste-keys', 'POST', requestBody);
+        if (turnstileContainer && typeof window.resetTurnstileInContainer === 'function') window.resetTurnstileInContainer(turnstileContainer);
+        if (ok) {
+            if (data.success && data.data && data.data.key) {
+                if (newApiKeyInput) newApiKeyInput.value = data.data.key;
+                if (newlyCreatedApiKeyDisplayDiv) newlyCreatedApiKeyDisplayDiv.classList.remove('hidden');
+                if (typeof window.showMessage === 'function') window.showMessage('云剪贴板 API 密钥创建成功！请复制并妥善保管。', 'success');
+            } else if (data.success && data.data && data.data.name) {
+                if (typeof window.showMessage === 'function') window.showMessage(`API密钥 "${window.escapeHtml(data.data.name)}" 已在外部服务创建成功。但服务未在响应中直接返回密钥值。`, 'info', true);
+            } else if (data.message && status >= 200 && status < 300) {
+                if (typeof window.showMessage === 'function') window.showMessage(`API密钥创建操作已发送: ${window.escapeHtml(data.message)}`, 'info', true);
+            } else {
+                if (typeof window.showMessage === 'function') window.showMessage(data.error || data.message || `创建API密钥时外部服务返回了预料之外的响应 (状态: ${status})`, 'warning');
+            }
+        } else {
+            if (typeof window.showMessage === 'function') window.showMessage(data.error || data.message || `代理创建云剪贴板API密钥时出错 (状态: ${status})`, 'error');
+        }
+    }
+}
+async function loadCloudPcKeyStatus() {
+    cloudPcKeyStatusArea = cloudPcKeyStatusArea || document.getElementById('cloud-pc-key-status-area');
+    createCloudPcKeyForm = createCloudPcKeyForm || document.getElementById('create-cloud-pc-key-form');
+    existingCloudPcKeyDisplayDiv = existingCloudPcKeyDisplayDiv || document.getElementById('existing-cloud-pc-key-display');
+    cloudPcApiKeyInput = cloudPcApiKeyInput || document.getElementById('cloud-pc-api-key-value');
+    cloudPcUsageCountSpan = cloudPcUsageCountSpan || document.getElementById('cloud-pc-usage-count');
+    cloudPcKeyEntryStatusElement = cloudPcKeyEntryStatusElement || document.getElementById('cloud-pc-key-entry-status');
+    if (!cloudPcKeyStatusArea || !cloudPcKeyEntryStatusElement) {
+        return;
+    }
+    cloudPcKeyStatusArea.innerHTML = '<p>正在加载 Cloud PC 密钥状态...</p>';
+    cloudPcKeyEntryStatusElement.textContent = '(正在加载...)';
+    cloudPcKeyEntryStatusElement.style.color = 'var(--current-text-muted-color)';
+    if (createCloudPcKeyForm) createCloudPcKeyForm.classList.add('hidden');
+    if (existingCloudPcKeyDisplayDiv) existingCloudPcKeyDisplayDiv.classList.add('hidden');
+    const createFormTurnstile = createCloudPcKeyForm?.querySelector('.cf-turnstile');
+    if (createFormTurnstile && typeof window.removeTurnstile === 'function') {
+        window.removeTurnstile(createFormTurnstile);
+    }
+    if (typeof window.apiCall === 'function') {
+        try {
+            const { ok, data, status } = await window.apiCall('/api/cloudpc-key');
+            if (ok) {
+                cloudPcKeyStatusArea.innerHTML = '';
+                if (data.apiKey) {
+                    if (cloudPcApiKeyInput) cloudPcApiKeyInput.value = data.apiKey;
+                    if (cloudPcUsageCountSpan) cloudPcUsageCountSpan.textContent = data.usageCount;
+                    if (existingCloudPcKeyDisplayDiv) existingCloudPcKeyDisplayDiv.classList.remove('hidden');
+                    if (createCloudPcKeyForm) createCloudPcKeyForm.classList.add('hidden');
+                    cloudPcKeyEntryStatusElement.textContent = '(已创建)';
+                    cloudPcKeyEntryStatusElement.style.color = 'var(--success-color)';
+                } else {
+                    cloudPcKeyStatusArea.innerHTML = '<p>您尚未创建 Cloud PC 密钥。</p>';
+                    if (createCloudPcKeyForm) {
+                        createCloudPcKeyForm.classList.remove('hidden');
+                        const turnstileInCreateForm = createCloudPcKeyForm.querySelector('.cf-turnstile');
+                        if (turnstileInCreateForm && typeof window.renderTurnstile === 'function') {
+                            window.renderTurnstile(turnstileInCreateForm);
+                        }
+                    }
+                    cloudPcKeyEntryStatusElement.textContent = '(未创建)';
+                    cloudPcKeyEntryStatusElement.style.color = 'var(--current-text-muted-color)';
+                }
+            } else {
+                const errorMessage = data && data.error ? window.escapeHtml(data.error) : `服务器返回状态 ${status}`;
+                cloudPcKeyStatusArea.innerHTML = `<p style="color: var(--danger-color);">加载 Cloud PC 密钥状态失败: ${errorMessage}</p>`;
+                cloudPcKeyEntryStatusElement.textContent = '(加载失败)';
+                cloudPcKeyEntryStatusElement.style.color = 'var(--danger-color)';
+            }
+        } catch (error) {
+            cloudPcKeyStatusArea.innerHTML = `<p style="color: var(--danger-color);">加载密钥时发生意外的前端错误。</p>`;
+            cloudPcKeyEntryStatusElement.textContent = '(加载错误)';
+            cloudPcKeyEntryStatusElement.style.color = 'var(--danger-color)';
+        }
+    } else {
+        cloudPcKeyStatusArea.innerHTML = `<p style="color: var(--danger-color);">前端 API 调用功能不可用。</p>`;
+        cloudPcKeyEntryStatusElement.textContent = '(错误)';
+        cloudPcKeyEntryStatusElement.style.color = 'var(--danger-color)';
+    }
+}
+async function handleCreateCloudPcKeySubmit(event) {
+    event.preventDefault();
+    if (typeof window.clearMessages === 'function') window.clearMessages();
+    const form = event.target;
+    const turnstileContainer = form.querySelector('.cf-turnstile');
+    const turnstileToken = form.querySelector('[name="cf-turnstile-response"]')?.value;
+    if (!turnstileToken && turnstileContainer) {
+        if (typeof window.showMessage === 'function') window.showMessage('人机验证失败，请重试。', 'error');
+        if (typeof window.resetTurnstileInContainer === 'function') window.resetTurnstileInContainer(turnstileContainer);
+        return;
+    }
+    if (typeof window.apiCall === 'function') {
+        const { ok, data, status } = await window.apiCall('/api/cloudpc-key', 'POST', { turnstileToken });
+        if (turnstileContainer && typeof window.resetTurnstileInContainer === 'function') window.resetTurnstileInContainer(turnstileContainer);
+        if (ok && data.success) {
+            if (typeof window.showMessage === 'function') window.showMessage(data.message || 'Cloud PC 密钥创建成功！', 'success');
+            loadCloudPcKeyStatus();
+        } else {
+            if (typeof window.showMessage === 'function') window.showMessage(data.error || `创建 Cloud PC 密钥失败 (${status})`, 'error');
+        }
+    } else {
+        if (typeof window.showMessage === 'function') window.showMessage('前端 API 调用功能不可用。', 'error');
+    }
+}
+async function handleFetchGreenHubKeysClick() {
+    if (typeof window.clearMessages === 'function') window.clearMessages();
+    greenHubCodesDisplayDiv = greenHubCodesDisplayDiv || document.getElementById('greenhub-codes-display');
+    if (!greenHubCodesDisplayDiv) {
+        if(typeof window.showMessage === 'function') window.showMessage('无法显示激活码，页面元素缺失。', 'error');
+        return;
+    }
+    greenHubCodesDisplayDiv.innerHTML = '<p class="placeholder-text">正在获取激活码...</p>';
+    if (typeof window.apiCall === 'function') {
+        const { ok, data, status } = await window.apiCall('/api/greenhub-keys', 'GET');
+        if (ok && data.success) {
+            if (data.license_codes && data.license_codes.length > 0) {
+                let listHtml = '<ul class="license-code-list">';
+                data.license_codes.forEach(code => {
+                    listHtml += `<li>${window.escapeHtml(code)}</li>`;
+                });
+                listHtml += '</ul>';
+                greenHubCodesDisplayDiv.innerHTML = listHtml;
+                if(typeof window.showMessage === 'function') window.showMessage('GreenHub 激活码获取成功！', 'success');
+            } else {
+                greenHubCodesDisplayDiv.innerHTML = `<p class="placeholder-text">${data.message || '未找到激活码。'}</p>`;
+                if(typeof window.showMessage === 'function') window.showMessage(data.message || '未找到激活码。', 'info');
+            }
+        } else {
+            const errorMsg = data.error || `获取 GreenHub 激活码失败 (状态: ${status})`;
+            greenHubCodesDisplayDiv.innerHTML = `<p class="placeholder-text" style="color: var(--danger-color);">${errorMsg}</p>`;
+            if(typeof window.showMessage === 'function') window.showMessage(errorMsg, 'error');
+        }
+    } else {
+        const errorMsg = 'API 调用功能不可用。';
+        greenHubCodesDisplayDiv.innerHTML = `<p class="placeholder-text" style="color: var(--danger-color);">${errorMsg}</p>`;
+        if(typeof window.showMessage === 'function') window.showMessage(errorMsg, 'error');
+    }
+}
+document.addEventListener('DOMContentLoaded', () => {
+    window.initializeApiKeysTab = initializeApiKeysTab;
     window.loadApiKeysTabData = loadApiKeysTabData;
 });

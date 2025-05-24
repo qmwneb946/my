@@ -1,3 +1,11 @@
+1.cpp
+
+my/wrangler.toml
+
+.vscode/
+
+1.sh
+
 # Logs
 logs
 *.log
@@ -139,4 +147,7 @@ dist
 wrangler.toml
 .env
 .dev.vars
+
 /.wrangler
+*/.wrangler
+my/wrangler.toml

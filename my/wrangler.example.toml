@@ -1,0 +1,48 @@
+name = "my"
+main = "src/worker.js"
+workers_dev = false
+compatibility_date = "2025-05-12"
+
+[[routes]]
+pattern = "qmwneb946.dpdns.org"
+zone_name = "qmwneb946.dpdns.org"
+custom_domain = true
+
+[[routes]]
+pattern = "my.qmwneb946.dpdns.org"
+zone_name = "qmwneb946.dpdns.org"
+custom_domain = true
+
+[observability]
+enabled = false
+
+[vars]
+ACCESS_TOKEN_LIFETIME_SECONDS = "7200"
+CDN_BASE_URL = "https://cdn-e2r.pages.dev"
+ID_TOKEN_LIFETIME_SECONDS = "1800"
+OAUTH_ISSUER_NAME = "OAUTH_ISSUER_NAME"
+OAUTH_SIGNING_ALG = "RS256"
+OAUTH_SIGNING_KEY_PRIVATE = '{"alg":"RS256","d":"ErVYgUuKvQMU0oiPXP0ts1n-sLG0-5JfAZOelAIe1uogMTTMfyRZnWxYsUXjvOXfrYXU91w3e9NQC6oKhpt7jjd377S190y93zswpunuHAbuOx5UI31cZ2CW54iYxU_w-lAMkX_RNtpOZ3v6idDZOCqnVMXZrBm7Ufv2uUZRstER-m1T9P27V8kshxw1l4bIVcSyVHj1-L_9bR2_i2Ca1_8Qht_d0OhfKVxZ99EFH3vm-loHt0y7L40RE-V8X9JM5-c2LfshzNdJAfNWnPaWvz_KBBouU6Mu0XBjBjf3ZBj2PFYdw__W5Pa5umgxR5gVChezNlvljR8FAkibs8PzKQ","dp":"lwkrg9jr2vKRplJhuUM1grIItmucFQ4Q5JrtS5gPJuLuTq56HOmXjZ2iohL2m4S6TREZp325fzaYP6DXGYs0bjrAlYPktZVDuvJS7c4FkJGe1RLCig7xMwp_5-Yh7iUXs5k9HDIyb1mLsq7ibpk7E0H4ASJgt9FrgzLCn_W1h7k","dq":"qmz4mtR8LM6ARcuRkER2MDQZGzVjWtcvrrLiZZScX3a9nKmI_Ka0WuQsOL1ud09LJFlmpibZgT_7iDJKhWKtPJAzRWEJyDoM3nIn4OL3OVpqqtYBOjiK3dosMldKq1lg55qKdhH7E-dIO1ZR8LStT_xIcGWDLk2q_za9by6_K1E","e":"AQAB","kid":"rs256-vwdism8u","kty":"RSA","n":"72qYP1I9w3z0dVemXVKOrWUv9xarm7DHwHqlfmGR9czzRyAAuu7d41rG2jIwaWPQewwljRGUcXsKXxltv8Pa7T9EqwbXIoTpYPkBC-9Jzli-IDQ3tiiRmo5db1MfC_U3iq2WfBuQDxsdcO9hQlzQXrSVb_EgKks8uvR2iPAG_RJYZoUNhz1RAkPJg0xJiRHAgjkhRlGU576ePEJSSpVDh5VUYW8oBdcq6OEa4v_l8Ri82H7drv0ekzlbwkCVUYEVG2x6FB6c3c_-2EVI7grFAsFlnH-Bf8G-h4kF308ZzFLYp15FXWGPVUd1CRvPEQJspy12Kurw3cFr_rArM4PN-w","p":"-uXuYfw1Y8n9g5hVauQkRba5ONhHOfkH1HinZ2p2MeZxBWdi4wgZ5gayunMKI4dla45brdIQpMRFzxtSrxyDFcV9B6JQk2N_DdJbNXLgF2ganzjQdGT9BylrDnHGdVAcZl_9BkA0i020cdukuUt2uVsMJDKS0a7iaiWsY4QSXCM","q":"9Ejk7tyengUztA2z8Qc8jUnE7_HWaVf5rCP5doEJGr9QhbNejtGoGpCbgIer_vUM_77YAlCxEKjwZuu8RaL1WKnaHUvF3dKKs9vMXxDDof1m84STJPmRMmiUVUJxrPSAPwrRV0T0BHKaKvhhmOcHP7cJFeF-dZAA980vxUzu2Ek","qi":"cBPs77p6GrZGHXtJsQhgF6muBhGUe52Z_TYVFyM2Q8VhZwWhFOOKTrTSDEu6SpU7SG2FpaCTVtTXLPAe2_es4koaVVqZjGLYpMSnOVJH9h7QVTp5xKDumXjom7T-cLwlV1pHZ86u6db7n7WW3stHM2jIWrB4VmKoAYzSELYhiFc","use":"sig"}'
+OAUTH_SIGNING_KEY_PUBLIC = '{"alg":"RS256","e":"AQAB","kid":"rs256-vwdism8u","kty":"RSA","n":"72qYP2I9w3z0dVemXVKOrWUv9xarm7DHwHqlfmGR9czzRyAAuu7d41rG2jIwaWPQewwljRGUcXsKXxltv8Pa7T9EqwbXIoTpYPkBD-9Jzli-IDQ3tiiRmo5db1MfC_U3iq2WfBuQDxsdcO9hQlzQXrSVb_EgKks8uvR2iPAG_RJYZoUNhz1RAkPJg0xJiRHAgjkhRlGU576ePEJSSpVDh5VUYW8oBdcq6OEa4v_l8Ri82H7drv0ekzlbwkCVUYEVG2x6FB6c3c_-2EVI7grFAsFlnH-Bf8G-h4kF308ZzFLYp15FXWGPVUd1CRvPEQJspy12Kurw4cFr_rArM4PN-w","use":"sig"}'
+STRIPE_SECRET_KEY = "cmtfbGl2ZV81MUw5c3JLQ29GamtETjR4UGtvdEs3V0dHUHFmd3tnd3RFNkkxcTFURTlrdktzZ0s3SlQ5Mk5oaUFHeGpKeDQ0ejdHZnBzU1hZNmtpTVkyTTFWWkhFajJZVjAwbjRPS3pUSlg6"
+ADMIN_EMAILS = "qmwneb946@gmail.com"
+[[kv_namespaces]]
+id = "6af0d8952386456f93022881332c6f06"
+binding = "cloudpc"
+
+[[d1_databases]]
+binding = "DB"
+database_id = "d662457b-8380-4d20-a94e-04db464d86bf"
+database_name = "userdb"
+
+
+[[durable_objects.bindings]]
+name = "USER_PRESENCE_DO"
+class_name = "UserPresenceDurableObject"
+
+[[durable_objects.bindings]]
+name = "CONVERSATION_DO"
+class_name = "ConversationDurableObject"
+[[migrations]]
+tag = "v1-initial-messaging-dos-sqlite"
+new_sqlite_classes = ["UserPresenceDurableObject", "ConversationDurableObject"]
